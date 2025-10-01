@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <strings.h>
+
 int choix;
 typedef struct
 {
@@ -40,12 +41,16 @@ void menuSoldeVirtuel();
 void cnsulterSold();
 void depotArgent();
 void verificationAuto();
+
 // 3
 
 void catalogueProduits();
 void AjoutProduit();
+ void initialiserCatalogue();
 void afficherCatalogue();
 void rechercherProduit();
+void triProduit();
+void detailsProduit();
 // void processusAchat();
 // void menuRecherche();
 // void menuStatistique();
@@ -55,6 +60,8 @@ int nbrProduits = 0;
 // fonction main ...............................................................................................
 int main()
 {
+    
+    initialiserCatalogue();
     menu();
 
     return 0;
@@ -84,14 +91,14 @@ void menu()
         menuProfileClient();
         break;
     case 2:
-        menuSoldeVirtuel();
+        menuSoldeVirtuel(); break;
     case 3:
-        catalogueProduits();
+        catalogueProduits(); break;
     case 4:
-        // processusAchat();
+        // processusAchat(); break;
 
     case 5:
-        // menuStatistique();
+        // menuStatistique(); break;
     case 6:
         exit(0);
     default:
@@ -157,12 +164,12 @@ void menuSoldeVirtuel()
         switch (choix)
         {
         case 1:
-            cnsulterSold();
+            cnsulterSold(); break;
         case 2:
-            depotArgent();
+            depotArgent(); break;
 
         case 3:
-            verificationAuto();
+            verificationAuto(); break;
         case 4:
             exit(0);
         default:
@@ -191,14 +198,14 @@ void catalogueProduits()
     switch (choix)
     {
     case 1:
-        afficherCatalogue();
+        afficherCatalogue(); break;
     case 2:
-        rechercherProduit();
+        rechercherProduit(); break;
 
     case 3:
-        // triProduit();
+        triProduit(); break;
     case 4:
-        // detailsProduit();
+        detailsProduit(); break;
 
     case 5:
         exit(0);
@@ -227,15 +234,15 @@ void catalogueProduits()
     switch (choix)
     {
     case 1:
-        selectionneProduit();
+        selectionneProduit(); break;
     case 2:
-        verifierStockSold();
+        verifierStockSold(); break;
     case 3:
-        Paiement();
+        Paiement(); break;
     case 4:
-        miseAjour();
+        miseAjour(); break;
     case 5:
-        Configuration();
+        Configuration(); break;
 
     case 6:
         exit(0);
@@ -360,95 +367,233 @@ void verificationAuto()
     getchar();
     menuSoldeVirtuel();
 }
-void afficherCatalogue()
+void initialiserCatalogue()
 {
+    if (nbrProduit == 0) {
+        // produit1
+        produit[nbrProduit].idProduit = idProduit++;
+        strcpy(produit[nbrProduit].nom, "Ordinateur");
+        strcpy(produit[nbrProduit].categorie, "Electronique");
+        strcpy(produit[nbrProduit].description, "Un ordinateur portable HP 16Go RAM 512Go SSD");
+        produit[nbrProduit].prix = 8000;
+        produit[nbrProduit].stock = 20;
+        nbrProduit++;
+        // produit2
+        produit[nbrProduit].idProduit = idProduit++;
+        strcpy(produit[nbrProduit].nom, "Smartphone");
+        strcpy(produit[nbrProduit].categorie, "Electronique");
+        strcpy(produit[nbrProduit].description, "Un smartphone Samsung Galaxy S21");
+        produit[nbrProduit].prix = 6000;
+        produit[nbrProduit].stock = 15;
+        nbrProduit++;
+        // produit3
+        produit[nbrProduit].idProduit = idProduit++;
+        strcpy(produit[nbrProduit].nom, "Casque");
+        strcpy(produit[nbrProduit].categorie, "Accessoires");
+        strcpy(produit[nbrProduit].description, "Casque sans fil Bluetooth");
+        produit[nbrProduit].prix = 350;
+        produit[nbrProduit].stock = 30;
+        nbrProduit++;
+        // produit4
+        produit[nbrProduit].idProduit = idProduit++;
+        strcpy(produit[nbrProduit].nom, "iphone");
+        strcpy(produit[nbrProduit].categorie, "Electronique");
+        strcpy(produit[nbrProduit].description, "Dernier modele iPhone 15 Pro Max, 256GB");
+        produit[nbrProduit].prix = 12000;
+        produit[nbrProduit].stock = 10;
+        nbrProduit++;
+    }
 
-    // produit1
-    produit[nbrProduit].idProduit = idProduit++;
-    strcpy(produit[nbrProduit].nom, "Ordinateur portable");
-    strcpy(produit[nbrProduit].categorie, "Electronique");
-    strcpy(produit[nbrProduit].description, "Un ordinateur portable HP 16Go RAM 512Go SSD");
-    produit[nbrProduit].prix = 8000;
-    produit[nbrProduit].stock = 20;
-    nbrProduit++;
-    // produit2
-    produit[nbrProduit].idProduit = idProduit++;
-    strcpy(produit[nbrProduit].nom, "Smartphone");
-    strcpy(produit[nbrProduit].categorie, "Electronique");
-    strcpy(produit[nbrProduit].description, "Un smartphone Samsung Galaxy S21");
-    produit[nbrProduit].prix = 6000;
-    produit[nbrProduit].stock = 15;
-    nbrProduit++;
-    // produit3
-    produit[nbrProduit].idProduit = idProduit++;
-    strcpy(produit[nbrProduit].nom, "Casque Audio");
-    strcpy(produit[nbrProduit].categorie, "Accessoires");
-    strcpy(produit[nbrProduit].description, "Casque sans fil Bluetooth");
-    produit[nbrProduit].prix = 350;
-    produit[nbrProduit].stock = 30;
-    nbrProduit++;
-    // Produit 4
-    produit[nbrProduit].idProduit = idProduit++;
-    strcpy(produit[nbrProduit].nom, "iPhone 15");
-    strcpy(produit[nbrProduit].categorie, "Electronique");
-    strcpy(produit[nbrProduit].description, "Dernier modele iPhone 15 Pro Max, 256GB");
-    produit[nbrProduit].prix = 12000;
-    produit[nbrProduit].stock = 10;
-    nbrProduit++;
-    // afficher les produits ..................................................................................
-    for (int i = 0; i < nbrProduit; i++)
-    {
+    
+    }
+void afficherCatalogue() {
+    initialiserCatalogue();
+    for (int i = 0; i < nbrProduit; i++) {
         printf("Produit : %d || le nom: %s ||  Categorie: %s || Prix: %.2fMAD|| Description: %s  ||  Stock :%d\n",
                produit[i].idProduit, produit[i].nom, produit[i].categorie, produit[i].prix, produit[i].description, produit[i].stock);
     }
 }
 
+
 // fonction Rechercher produit ....................................................................................
 
 void rechercherProduit()
-{ int choix;
+{
+    int choix;
     int i;
     char nomProduit[50];
     char categorieProduit[50];
-     int nProduits;
-
-    printf("1-recherche par nom \n");
-    printf("2-recherche par categorie \n");
+    printf("1-recherche par nom\n");
+    printf("2-recherche par categorie\n");
 
     do
     {
         printf("Entrer un  choix: ");
         scanf("%d", &choix);
-        while (getchar() != '\n')
-            ;
 
     } while (choix < 1 || choix > 2);
-    getchar();
+    int trouve = 0;
     switch (choix)
     {
     case 1:
+        trouve = 0;
 
-        printf("Rechercher par nom ");
-        scanf("%s", nomProduit);
-        for (int i = 0; i < nProduits; i++) {
-        if (strcasecmp(nomProduit, produit[i].nom)== 0)
+        printf("Rechercher par nom:");
+        scanf(" %49s", nomProduit);
+
+        for (int i = 0; i < nbrProduit; i++)
         {
-            printf("les resultat de recherche est :%s", produit[i].nom );
-        }
-}
-        break;
-    case 2:
+            if (strcasecmp(nomProduit, produit[i].nom) == 0)
 
-        printf("Rechercher par categorie ");
-         for (int i = 0; i < nProduits; i++) {
-       if(strcmp(categorieProduit, produit[i].categorie)==0){
-         printf("les resultat de recherche est :%s", produit[i].categorie);
-       }
-          }
+            {
+                printf("=== Produit trouve ===\n");
+                printf("ID: %d\n", produit[i].idProduit);
+                printf("Nom: %s\n", produit[i].nom);
+                printf("Categorie: %s\n", produit[i].categorie);
+                printf("Prix: %.2f MAD\n", produit[i].prix);
+                printf("Description: %s\n", produit[i].description);
+                printf("Stock: %d\n", produit[i].stock);
+
+                trouve = 1;
+            }
+        }
+        if (!trouve)
+        {
+            printf("Aucun produit trouve avec ce nom.\n");
+        }
         break;
-    default:
-        printf("error");
+
+    case 2:
+        trouve = 0;
+
+        printf("Rechercher par categorie:");
+        scanf(" %49s", categorieProduit);
+
+        for (int i = 0; i < nbrProduit; i++)
+        {
+            if (strcasecmp(categorieProduit, produit[i].categorie) == 0)
+
+            {
+                printf("=== Produit trouve ===\n");
+                printf("ID: %d\n", produit[i].idProduit);
+                printf("Nom: %s\n", produit[i].nom);
+                printf("Categorie: %s\n", produit[i].categorie);
+                printf("Prix: %.2f MAD\n", produit[i].prix);
+                printf("Description: %s\n", produit[i].description);
+                printf("Stock: %d\n", produit[i].stock);
+                trouve = 1;
+            }
+        }
+        if (!trouve)
+        {
+            printf("Aucun produit trouve avec cette categorie.\n");
+        }
         break;
     }
-     catalogueProduits();
+    catalogueProduits();
 }
+void triProduit()
+{
+    int choix;
+    Produit temp;
+    printf("1-Tri par prix croissant\n");
+    printf("2-Tri par prix decroissant\n");
+    printf("3-Tri par nom alphabetique\n");
+    do
+    {
+
+        printf("Entrer votre choix: ");
+        scanf("%d", &choix);
+    } while (choix < 1 || choix > 3);
+    switch (choix)
+    {
+    // pour le prix croissant
+    case 1:
+        for (int i = 0; i < nbrProduit - 1; i++)
+        {
+            for (int j = i + 1; j < nbrProduit; j++)
+            {
+                if (produit[i].prix > produit[j].prix)
+                {
+                    temp = produit[i];
+                    produit[i] = produit[j];
+                    produit[j] = temp;
+                }
+            }
+        }
+        
+        break;
+
+    case 2: // pour le  prix decroissant
+        for (int i = 0; i < nbrProduit - 1; i++)
+        {
+            for (int j = i + 1; j < nbrProduit; j++)
+            {
+                if (produit[i].prix < produit[j].prix)
+                {
+                    temp = produit[i];
+                    produit[i] = produit[j];
+                    produit[j] = temp;
+                }
+            }
+        }
+        break;
+    case 3: // tri par nom alphabetique
+        for (int i = 0; i < nbrProduit - 1; i++)
+        {
+            for (int j = i + 1; j < nbrProduit; j++)
+            {
+                if (strcasecmp(produit[i].nom, produit[j].nom) > 0)
+                {
+                    temp = produit[i];
+                    produit[i] = produit[j];
+                    produit[j] = temp;
+                }
+            }
+            
+        }
+    default:
+        printf("Choix invalide!\n");
+
+        
+    }
+     printf("=== Catalogue trie ===\n");
+     afficherCatalogue();
+     getchar();
+     getchar();
+     catalogueProduits();
+     
+    
+    }
+    //afficher les detailles d' un produit.....................................................................
+    void detailsProduit() {
+    int id;
+    int trouve = 0;
+
+    printf("Entrer l'id du produit pour voir les details: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < nbrProduit; i++) {
+        if (produit[i].idProduit == id) {
+            printf("============ Details du Produit =================\n");
+            printf("ID: %d\n", produit[i].idProduit);
+            printf("Nom: %s\n", produit[i].nom);
+            printf("Categorie: %s\n", produit[i].categorie);
+            printf("Prix: %.2f MAD\n", produit[i].prix);
+            printf("Description: %s\n", produit[i].description);
+            printf("Stock: %d\n", produit[i].stock);
+            trouve = 1;
+            break;
+        }
+    }
+
+    if (!trouve) {
+        printf("Aucun produit trouve avec cet ID.\n");
+    }
+
+    printf("\nAppuyez sur Entree pour revenir au catalogue...\n");
+    getchar(); 
+    getchar();
+    catalogueProduits(); 
+}
+
