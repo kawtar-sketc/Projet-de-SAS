@@ -132,41 +132,50 @@ void menu()
 // menu de profile de client  ..............................................................................................
 void menuProfileClient()
 {
-
     int choix;
-    printf("======================================= Menu de de Profile de client  =================================================\n");
+    int validInput;
+
+    printf("======================================= Menu de Profile de client =================================================\n");
     printf("1-Creer un profil\n");
-    printf("2-Modifier un profil \n");
+    printf("2-Modifier un profil\n");
     printf("3-Consulter un profil\n");
-    printf("4-Retour a menu principal \n");
+    printf("4-Retour a menu principal\n");
 
     do
     {
         printf("Entrer un choix : ");
-        scanf("%d", &choix);
+        validInput = scanf("%d", &choix);
+
+        if (validInput != 1) {
+            printf("Entrée invalide ! Veuillez entrer un nombre.\n");
+            // vider le buffer
+            while (getchar() != '\n');
+            choix = 0; // force la boucle à continuer
+        }
     } while (choix < 1 || choix > 4);
+
+    // vider le buffer avant de continuer
+    while (getchar() != '\n');
+
     switch (choix)
     {
-    case 1:
-        creerProfile();
-        break;
-    case 2:
-        modifierProfile();
-        break;
-
-    case 3:
-        AfficherProfile();
-        break;
-
-    case 4:
-        menu();
-        break;
-    default:
-        printf("Choix invalide!\n");
+        case 1:
+            creerProfile();
+            break;
+        case 2:
+            modifierProfile();
+            break;
+        case 3:
+            AfficherProfile();
+            break;
+        case 4:
+            menu();  // retour direct au menu principal
+            return;  // empêche de rappeler menu() après
     }
-    getchar();
-    getchar();
-    menu();
+
+    printf("\nAppuyez sur Entrée pour continuer...");
+    getchar(); // pause
+    menu();    // retour menu principal après actions 1,2,3
 }
 
 // fonction qui creer un  client1............................................................................
@@ -379,8 +388,7 @@ void catalogueProduits()
 
     case 5:
         menu();
-    default:
-        printf("Choix invalide!\n");
+    
     }
 }
 void initialiserCatalogue()
