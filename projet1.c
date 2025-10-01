@@ -27,10 +27,20 @@ Produit produit[100];
 int nbrProduit = 0;
 int idProduit = 1;
 
+#define MAX_HIST 100
+#define MAX_ACTION 200
+
+typedef struct
+{
+    char action[MAX_ACTION];
+} Historique;
+Historique historique[MAX_HIST];
+int nbrHistorique = 0;
 // prototype.......................................................................................................
 
 // 1
 void menu();
+
 void menuProfileClient();
 void creerProfile();
 void modifierProfile();
@@ -38,7 +48,7 @@ void AfficherProfile();
 
 // 2
 void menuSoldeVirtuel();
-void cnsulterSold();
+void consulterSolde();
 void depotArgent();
 void verificationAuto();
 
@@ -54,11 +64,9 @@ void detailsProduit();
 
 // 4
 void ProcessusAchat();
-
-
-
-
- void menuStatistique();
+// 5
+void ajouterHistorique();
+void afficherHistorique();
 
 int nbrProduits = 0;
 
@@ -68,6 +76,13 @@ int main()
 
     initialiserCatalogue();
     menu();
+    ajouterHistorique("Premier action");
+    ajouterHistorique("Deuxieme action");
+
+    for (int i = 0; i < nbrHistorique; i++)
+    {
+        printf("%s\n", historique[i]);
+    }
 
     return 0;
 }
@@ -82,7 +97,7 @@ void menu()
     printf("2-Gestion du solde virtuel \n");
     printf("3-Catalogue des Produits\n");
     printf("4-Effectuer un achat \n");
-    printf("5-Mes statistiques\n");
+    printf("5-Mes Historiques\n");
     printf("6- Quitter l'application\n");
 
     do
@@ -106,7 +121,8 @@ void menu()
         break;
 
     case 5:
-         menuStatistique(); break;
+        afficherHistorique();
+        break;
     case 6:
         exit(0);
     default:
@@ -153,26 +169,98 @@ void menuProfileClient()
     menu();
 }
 
+// fonction qui creer un  client1............................................................................
+void creerProfile()
+{
+    client1.idClient = 1;
+    printf("entrer le nom :");
+    scanf("%s", client1.nom);
+    printf("entrer le prenom :");
+    scanf("%s", client1.prenom);
+    client1.solde = 0.0;
+    createdProfile = 1;
+    getchar();
+    getchar();
+    menuProfileClient();
+}
+// fonction pour modifier le prodfile de client ...............................................................
+
+void modifierProfile()
+{
+    int choix;
+    char nvNom[30];
+    char nvPrenom[30];
+
+    printf("1-modifier le nom \n");
+    printf("2-modifier le prenom \n");
+
+    do
+    {
+        printf("Entrer un  choix: ");
+        scanf("%d", &choix);
+        while (getchar() != '\n')
+            ;
+
+    } while (choix < 1 || choix > 2);
+    getchar();
+    switch (choix)
+    {
+    case 1:
+
+        printf("entrer le nouveau nom ");
+        scanf("%s", nvNom);
+        strcpy(client1.nom, nvNom);
+        break;
+    case 2:
+
+        printf("entrer le nouveau prenom ");
+        scanf("%s", nvPrenom);
+        strcpy(client1.prenom, nvPrenom);
+        break;
+    default:
+        printf("error");
+        break;
+    }
+    menuProfileClient();
+}
+
+// fonction pour afficher un clien1.............................................................................
+
+void AfficherProfile()
+{
+    char email[70];
+    sprintf(email, "%s.%s@client.com", client1.prenom, client1.nom);
+
+    printf("===== Informations Client =====\n");
+    printf("id Client : %d || Nom : %s || Prenom: %s || Email : %s || Solde: %.2f MAD\n",
+           client1.idClient, client1.nom, client1.prenom, email, client1.solde);
+
+    getchar();
+    getchar();
+    menuProfileClient();
+}
+
 // menu de Gestion du Solde Virtuel ..............................................................................................
 void menuSoldeVirtuel()
 {
 
-    printf("======================================= Menu de Solde Virtuel =================================================\n");
+    printf("=================== Menu de Solde Virtuel ====================\n");
+    int choix;
     do
     {
 
-        int choix;
         printf("1-Consulter le solde:\n");
         printf("2-Depot d'argent\n");
-        printf("3-Verification automatique\n");
-        printf("4-Quiter\n");
+        printf("3-Verifier solde pour achat\n");
+        printf("4-Retour au menu \n");
         printf("Entrer un choix: ");
         scanf("%d", &choix);
 
         switch (choix)
         {
         case 1:
-            cnsulterSold();
+            consulterSolde();
+
             break;
         case 2:
             depotArgent();
@@ -186,7 +274,74 @@ void menuSoldeVirtuel()
         default:
             printf("Choix invalide!\n");
         }
-    } while (choix != 5);
+    } while (choix != 4);
+}
+// fonction consulter sold .................................................................................
+void consulterSolde()
+{
+    if (createdProfile == 0)
+    {
+        printf("il n'y a pas de profile veuillez creer un profile\n");
+    }
+    else
+    {
+        printf("le sold est : %.2f\n", client1.solde);
+    }
+    getchar();
+    getchar();
+    menuSoldeVirtuel();
+}
+
+// fonction depot dargent  .................................................................................
+void depotArgent()
+{
+    if (createdProfile == 0)
+    {
+        printf("il n'y a pas de profile veuillez creer un profile\n");
+    }
+    else
+    {
+        int montant;
+        printf("entrer un montant: ");
+        scanf("%d", &montant);
+        if (montant > 0)
+        {
+            client1.solde += montant;
+        }
+        else
+        {
+            printf("error");
+        }
+        printf("\nAppuyez sur Entree pour revenir au menu...");
+        getchar();
+        getchar();
+        menuSoldeVirtuel();
+    }
+}
+void verificationAuto()
+{
+    if (createdProfile == 0)
+    {
+        printf("il n'y a pas de profile veuillez creer un profile\n");
+    }
+    else
+    {
+        int prixProd;
+        printf("entrer le prix de produit que tu veux le acheter ");
+        scanf("%d", &prixProd);
+        if (prixProd <= client1.solde)
+        {
+            client1.solde = client1.solde - prixProd;
+            printf("achat effectue avec succes");
+        }
+        else
+        {
+            printf("Solde insuffisant");
+        }
+    }
+    getchar();
+    getchar();
+    menuSoldeVirtuel();
 }
 // Catalogue des Produits..............................................................................................
 void catalogueProduits()
@@ -227,128 +382,6 @@ void catalogueProduits()
     default:
         printf("Choix invalide!\n");
     }
-}
-
-// fonction qui creer un  client1............................................................................
-void creerProfile()
-{
-    client1.idClient = 1;
-    printf("entrer le nom :");
-    scanf("%s", client1.nom);
-    printf("entrer le prenom :");
-    scanf("%s", client1.prenom);
-    client1.solde = 0.0;
-    createdProfile = 1;
-    getchar();
-    getchar();
-    menuProfileClient();
-}
-// fonction pour afficher un clien1.............................................................................
-
-void AfficherProfile()
-{
-    char email[70];
-    sprintf(email, "%s.%s@client.com", client1.prenom, client1.nom);
-
-    printf("===== Informations Client =====\n");
-    printf("id Client : %d || Nom : %s || Prenom: %s || Email : %s || Solde: %.2f MAD\n",
-           client1.idClient, client1.nom, client1.prenom,email, client1.solde);
-        
-    getchar();
-    getchar();
-    menuProfileClient();
-}
-
-// fonction pour modifier le prodfile de client ...............................................................
-void modifierProfile()
-{
-    int choix;
-    char nvNom[30];
-    char nvPrenom[30];
-
-    printf("1-modifier le nom \n");
-    printf("2-modifier le prenom \n");
-
-    do
-    {
-        printf("Entrer un  choix: ");
-        scanf("%d", &choix);
-        while (getchar() != '\n')
-            ;
-
-    } while (choix < 1 || choix > 2);
-    getchar();
-    switch (choix)
-    {
-    case 1:
-
-        printf("entrer le nouveau nom ");
-        scanf("%s", nvNom);
-        strcpy(client1.nom, nvNom);
-        break;
-    case 2:
-
-        printf("entrer le nouveau prenom ");
-        scanf("%s", nvPrenom);
-        strcpy(client1.prenom, nvPrenom);
-        break;
-    default:
-        printf("error");
-        break;
-    }
-    menuProfileClient();
-}
-// fonction consulter sold .................................................................................
-void cnsulterSold()
-{
-    if (createdProfile == 0)
-    {
-        printf("il n'y a pas de profile veuillez creer un profile");
-    }
-    else
-    {
-        printf("le sold est : %.2f\n", client1.solde);
-        getchar();
-         getchar();
-         menuSoldeVirtuel();
-    }
-}
-// fonction depot dargent  .................................................................................
-void depotArgent()
-{
-    int montant;
-    printf("entrer un montant: ");
-    scanf("%d", &montant);
-    if (montant > 0)
-    {
-        client1.solde += montant;
-    }
-    else
-    {
-        printf("error");
-    }
-    printf("\nAppuyez sur Entree pour revenir au menu...");
-    getchar();
-    getchar();
-    menuSoldeVirtuel();
-}
-void verificationAuto()
-{
-    int prixProd;
-    printf("entrer le prix de produit que tu veux le acheter ");
-    scanf("%d", &prixProd);
-    if (prixProd <= client1.solde)
-    {
-        client1.solde = client1.solde - prixProd;
-        printf("achat effectue avec succes");
-    }
-    else
-    {
-        printf("Solde insuffisant");
-    }
-    getchar();
-    getchar();
-    menuSoldeVirtuel();
 }
 void initialiserCatalogue()
 {
@@ -550,7 +583,7 @@ void detailsProduit()
 {
     int id;
     int trouve = 0;
-    int i; 
+    int i;
 
     printf("Entrer l'id du produit pour voir les details: ");
     scanf("%d", &id);
@@ -586,14 +619,12 @@ void ProcessusAchat()
 {
     int quantite, choix;
     int trouve = 0;
-    int i = -1; 
+    int i = -1;
 
-    
     afficherCatalogue();
 
     printf("\n=== Selection de produit ===\n");
 
-   
     do
     {
         printf("Entrer l'ID du produit que tu veux selectionner : ");
@@ -606,7 +637,7 @@ void ProcessusAchat()
             {
                 printf("Tu as choisi : %s avec prix %.2f MAD\n", produit[j].nom, produit[j].prix);
                 trouve = 1;
-                i = j; 
+                i = j;
                 break;
             }
         }
@@ -640,10 +671,41 @@ void ProcessusAchat()
     client1.solde -= montantTotal;
     produit[i].stock -= quantite;
 
+    char action[MAX_ACTION];
+    sprintf(action, "Achat de %d %s pour %.2f MAD", quantite, produit[i].nom, montantTotal);
+    ajouterHistorique(action);
+
     // Confirmation
     printf("\n=== Achat reussi ===\n");
     printf("Nouveau solde : %.2f MAD\n", client1.solde);
     printf("Nouveau stock du produit %s : %d\n", produit[i].nom, produit[i].stock);
-
 }
+// historique
+void ajouterHistorique(char action[MAX_ACTION])
+{
+    if (nbrHistorique >= MAX_HIST)
+    {
+        printf("Historique plein!\n");
+        return;
+    }
 
+    strcpy(historique[nbrHistorique].action, action);
+    nbrHistorique++;
+}
+// afficher historique
+void afficherHistorique()
+{
+    printf("\n===== Historique des actions =====\n");
+
+    if (nbrHistorique == 0)
+    {
+        printf("Aucune action enregistree.\n");
+    }
+    else
+    {
+        for (int i = 0; i < nbrHistorique; i++)
+        {
+            printf("%d- %s\n", i + 1, historique[i].action);
+        }
+    }
+}
