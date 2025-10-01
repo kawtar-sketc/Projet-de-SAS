@@ -46,21 +46,26 @@ void verificationAuto();
 
 void catalogueProduits();
 void AjoutProduit();
- void initialiserCatalogue();
+void initialiserCatalogue();
 void afficherCatalogue();
 void rechercherProduit();
 void triProduit();
 void detailsProduit();
-// void processusAchat();
-// void menuRecherche();
-// void menuStatistique();
+
+// 4
+void ProcessusAchat();
+
+
+
+
+ void menuStatistique();
 
 int nbrProduits = 0;
 
 // fonction main ...............................................................................................
 int main()
 {
-    
+
     initialiserCatalogue();
     menu();
 
@@ -72,7 +77,7 @@ void menu()
 
     int choix;
 
-    printf("======================================= Menu =================================================\n");
+    printf("========================== Menu ========================\n");
     printf("1-Gestion du profil client \n");
     printf("2-Gestion du solde virtuel \n");
     printf("3-Catalogue des Produits\n");
@@ -91,14 +96,17 @@ void menu()
         menuProfileClient();
         break;
     case 2:
-        menuSoldeVirtuel(); break;
+        menuSoldeVirtuel();
+        break;
     case 3:
-        catalogueProduits(); break;
+        catalogueProduits();
+        break;
     case 4:
-        // processusAchat(); break;
+        ProcessusAchat();
+        break;
 
     case 5:
-        // menuStatistique(); break;
+         menuStatistique(); break;
     case 6:
         exit(0);
     default:
@@ -164,14 +172,17 @@ void menuSoldeVirtuel()
         switch (choix)
         {
         case 1:
-            cnsulterSold(); break;
+            cnsulterSold();
+            break;
         case 2:
-            depotArgent(); break;
+            depotArgent();
+            break;
 
         case 3:
-            verificationAuto(); break;
+            verificationAuto();
+            break;
         case 4:
-            exit(0);
+            menu();
         default:
             printf("Choix invalide!\n");
         }
@@ -198,58 +209,26 @@ void catalogueProduits()
     switch (choix)
     {
     case 1:
-        afficherCatalogue(); break;
+        afficherCatalogue();
+        break;
     case 2:
-        rechercherProduit(); break;
+        rechercherProduit();
+        break;
 
     case 3:
-        triProduit(); break;
+        triProduit();
+        break;
     case 4:
-        detailsProduit(); break;
+        detailsProduit();
+        break;
 
     case 5:
-        exit(0);
+        menu();
     default:
         printf("Choix invalide!\n");
     }
-} /*
- // Processus d'Achat..............................................................................................
- void processuAchat()
- {
+}
 
-    printf("======================================= Processus d'Achat =================================================\n");
-    printf("1-Sélection de produit :\n");
-    printf("2-Vérifications\n");
-    printf("3-Paiement\n");
-    printf("4-Mise à jour \n");
-    printf("5-Confirmation\n");
-    printf("6-Quiter\n");
-
-    int choix;
-    do
-    {
-        printf("Entrer un choix ");
-        scanf("%d", &choix);
-    } while (choix < 1 && choix > 6);
-    switch (choix)
-    {
-    case 1:
-        selectionneProduit(); break;
-    case 2:
-        verifierStockSold(); break;
-    case 3:
-        Paiement(); break;
-    case 4:
-        miseAjour(); break;
-    case 5:
-        Configuration(); break;
-
-    case 6:
-        exit(0);
-    default:
-        printf("Choix invalide!\n");
-    }
- }*/
 // fonction qui creer un  client1............................................................................
 void creerProfile()
 {
@@ -273,7 +252,8 @@ void AfficherProfile()
 
     printf("===== Informations Client =====\n");
     printf("id Client : %d || Nom : %s || Prenom: %s || Email : %s || Solde: %.2f MAD\n",
-           client1.idClient, client1.nom, client1.prenom, email, client1.solde);
+           client1.idClient, client1.nom, client1.prenom,email, client1.solde);
+        
     getchar();
     getchar();
     menuProfileClient();
@@ -328,6 +308,9 @@ void cnsulterSold()
     else
     {
         printf("le sold est : %.2f\n", client1.solde);
+        getchar();
+         getchar();
+         menuSoldeVirtuel();
     }
 }
 // fonction depot dargent  .................................................................................
@@ -369,7 +352,8 @@ void verificationAuto()
 }
 void initialiserCatalogue()
 {
-    if (nbrProduit == 0) {
+    if (nbrProduit == 0)
+    {
         // produit1
         produit[nbrProduit].idProduit = idProduit++;
         strcpy(produit[nbrProduit].nom, "Ordinateur");
@@ -403,17 +387,16 @@ void initialiserCatalogue()
         produit[nbrProduit].stock = 10;
         nbrProduit++;
     }
-
-    
-    }
-void afficherCatalogue() {
+}
+void afficherCatalogue()
+{
     initialiserCatalogue();
-    for (int i = 0; i < nbrProduit; i++) {
+    for (int i = 0; i < nbrProduit; i++)
+    {
         printf("Produit : %d || le nom: %s ||  Categorie: %s || Prix: %.2fMAD|| Description: %s  ||  Stock :%d\n",
                produit[i].idProduit, produit[i].nom, produit[i].categorie, produit[i].prix, produit[i].description, produit[i].stock);
     }
 }
-
 
 // fonction Rechercher produit ....................................................................................
 
@@ -492,6 +475,7 @@ void rechercherProduit()
     }
     catalogueProduits();
 }
+// trier les produit par croissnat et decroissant et par nom alphabetique
 void triProduit()
 {
     int choix;
@@ -521,7 +505,7 @@ void triProduit()
                 }
             }
         }
-        
+
         break;
 
     case 2: // pour le  prix decroissant
@@ -550,31 +534,31 @@ void triProduit()
                     produit[j] = temp;
                 }
             }
-            
         }
     default:
         printf("Choix invalide!\n");
-
-        
+        menu();
     }
-     printf("=== Catalogue trie ===\n");
-     afficherCatalogue();
-     getchar();
-     getchar();
-     catalogueProduits();
-     
-    
-    }
-    //afficher les detailles d' un produit.....................................................................
-    void detailsProduit() {
+    printf("=== Catalogue trie ===\n");
+    afficherCatalogue();
+    getchar();
+    getchar();
+    catalogueProduits();
+}
+// afficher les detailles d'un produit.....................................................................
+void detailsProduit()
+{
     int id;
     int trouve = 0;
+    int i; 
 
     printf("Entrer l'id du produit pour voir les details: ");
     scanf("%d", &id);
 
-    for (int i = 0; i < nbrProduit; i++) {
-        if (produit[i].idProduit == id) {
+    for (i = 0; i < nbrProduit; i++)
+    {
+        if (produit[i].idProduit == id)
+        {
             printf("============ Details du Produit =================\n");
             printf("ID: %d\n", produit[i].idProduit);
             printf("Nom: %s\n", produit[i].nom);
@@ -587,13 +571,79 @@ void triProduit()
         }
     }
 
-    if (!trouve) {
+    if (!trouve)
+    {
         printf("Aucun produit trouve avec cet ID.\n");
     }
 
     printf("\nAppuyez sur Entree pour revenir au catalogue...\n");
-    getchar(); 
     getchar();
-    catalogueProduits(); 
+    getchar();
+    catalogueProduits();
+}
+// pour selectionner un produit ..............................................
+void ProcessusAchat()
+{
+    int quantite, choix;
+    int trouve = 0;
+    int i = -1; 
+
+    
+    afficherCatalogue();
+
+    printf("\n=== Selection de produit ===\n");
+
+   
+    do
+    {
+        printf("Entrer l'ID du produit que tu veux selectionner : ");
+        scanf("%d", &choix);
+
+        trouve = 0;
+        for (int j = 0; j < nbrProduit; j++)
+        {
+            if (choix == produit[j].idProduit)
+            {
+                printf("Tu as choisi : %s avec prix %.2f MAD\n", produit[j].nom, produit[j].prix);
+                trouve = 1;
+                i = j; 
+                break;
+            }
+        }
+
+        if (trouve == 0)
+        {
+            printf("Aucun produit avec cet ID.\n");
+        }
+
+    } while (trouve == 0);
+
+    // Vérification du stock
+    printf("Entrer la quantite que tu veux acheter : ");
+    scanf("%d", &quantite);
+
+    if (produit[i].stock < quantite)
+    {
+        printf("Stock insuffisant ! : %d\n", produit[i].stock);
+        return;
+    }
+
+    // Vérification du solde
+    float montantTotal = produit[i].prix * quantite;
+    if (client1.solde < montantTotal)
+    {
+        printf("Solde insuffisant ! Ton solde actuel est : %.2f MAD\n", client1.solde);
+        return;
+    }
+
+    // Paiement
+    client1.solde -= montantTotal;
+    produit[i].stock -= quantite;
+
+    // Confirmation
+    printf("\n=== Achat reussi ===\n");
+    printf("Nouveau solde : %.2f MAD\n", client1.solde);
+    printf("Nouveau stock du produit %s : %d\n", produit[i].nom, produit[i].stock);
+
 }
 
